@@ -6,18 +6,18 @@ heroText: Welcome to Meter Docs
 ---
 <div class="features">
   <div class="feature">
-    <h2>Thor</h2>
+    <h2>Meter</h2>
     <p>The public blockchain that derives its value from activities created by members within the ecosystem solving real world economic problem.</p>
-    <a :href="$withBase('/thor/learn')">Learn More</a>
+    <a :href="$withBase('/meter/learn')">Learn More</a>
   </div>
   <div class="feature">
-    <h2>Connex</h2>
-    <p>Standard interface to connect VeChain apps with VeChain blockchain and user.</p>
-     <a :href="$withBase('/connex')">Get Started</a>
+    <h2>Flex</h2>
+    <p>Standard interface to connect Meter apps with Meter blockchain and user.</p>
+     <a :href="$withBase('/flex')">Get Started</a>
   </div>
   <div class="feature">
-    <h2>Sync</h2>
-    <p>Designed to provide the superior user experiences for VeChain Apps, and serves as the dApp environment to provide unlimited potential for developers and users.</p>
+    <h2>Wallet</h2>
+    <p>Designed to provide the superior user experiences and security for Meter network access across multiple platforms.</p>
     <a :href="$withBase('/sync/download-and-install')">Download Now</a>
   </div>
 </div>
