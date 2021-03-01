@@ -1,20 +1,20 @@
 module.exports = [
     {
        
-        text: 'Thor',
-        ariaLabel: 'Thor',
+        text: 'Meter',
+        ariaLabel: 'Meter',
         items: [
             {
                 text: 'Learn',
-                link: '/thor/learn/'
+                link: '/meter/learn/'
             },
             {
                 text: 'Get Started',
-                link: '/thor/get-started/installation.html'
+                link: '/meter/get-started/installation.html'
             },
             {
                 text: 'Thorest API',
-                link: '/thor/get-started/api.html'
+                link: '/meter/get-started/api.html'
             },
         ]
     },
@@ -55,20 +55,20 @@ module.exports = [
         ]
     },
     {
-        text: 'Sync', 
-        ariaLabel: 'Sync',
+        text: 'Wallet', 
+        ariaLabel: 'Wallet',
         items: [
             {
                 text: 'Download',
-                link: '/sync/download-and-install.html' 
+                link: '/wallet/download-and-install.html' 
             },
             {
                 text: 'User Guide',
-                link: '/sync/user-guide/' 
+                link: '/wallet/user-guide/' 
             },
             {
                 text: 'FAQ',
-                link: '/sync/faq.html' 
+                link: '/wallet/faq.html' 
             }
         ]
     },
@@ -80,8 +80,12 @@ module.exports = [
         text: 'Resources',
         items: [
             {
-                text: 'Explorer',
-                link: 'https://explore.vechain.org'
+                text: 'Mainnet Explorer',
+                link: 'https://explorer.meter.io'
+            },
+            {
+                text: 'Testnet Explorer',
+                link: 'https://explorer-warringstakes.meter.io/'
             },
             {
                 text: 'App-hub',
@@ -97,19 +101,4 @@ module.exports = [
             }
         ]
     },
-    {
-        text: 'Online Support', 
-        ariaLabel: 'Online Support',
-        items: [
-            {
-                text: 'VeChain Official',
-                link: 'https://t.me/vechain_official_english' 
-            },
-            {
-                text: 'Dev Community',
-                link: 'https://t.me/VeChainDevCommunity' 
-            }
-            
-        ]
-    }
 ]   

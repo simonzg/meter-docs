@@ -33,9 +33,9 @@ web3Instance.eth.getBalance(address[,blockNumberOrHash]).then(result => {
 
 `Promise` returns `String`: The balance of account in `wei`(number in string)
 
-### Get account energy(VTHO) balance
+### Get account MTR balance
 
-Query the energy(VTHO) balance of an address
+Query the MTR balance of an address
 
 ``` javascript
 web3Instance.eth.getEnergy(address[,blockNumberOrHash]).then(result => {
@@ -71,6 +71,11 @@ web3Instance.eth.getChainTag().then(result => {
 })
 > "0x65"
 ```
+
+**Notice**
+
+`0x65` is the chainTag for Meter warringstakes testnet
+`0x52` is the chainTag for Meter mainnet
 
 **Returns**
 
@@ -117,7 +122,23 @@ web3Instance.eth.getBlock(blockNumberOrHash).then(result => {
     isTrunk: true,
     isKBlock: false,
     lastKBlockHeight: 85631,
-    committee: [],
+    committee: [
+      {
+        index: 0,
+        netAddr: "135.181.103.205",
+        pubKey: "BIzfOIBJBduZ4F+34Pgt+whM3JOh+O8oghRJNtNWbquPFEZxo88A/g8QbV3+KfnPQzqV35RFLnoCgSk8xW7qO1w="
+      },
+      {
+        index: 1,
+        netAddr: "35.222.167.14",
+        pubKey: "BHl66n2Re+pQaT+P38u1rdllV8TiSLrtkwdU8MdtopFYvufPnclQeK3SSpdy7c8s5Onbm717aHC+ZEiv4C+SQXI="
+      },
+      {
+        index: 2,
+        netAddr: "35.188.145.63",
+        pubKey: "BI5b+MtRSDaA9XNsftKUcjmw66XY8m5RqD7EnVbpphzZDxXFs8FJTEhER/RBwSLzXJTzeWpmnyrNGOvln43XAbE="
+      }
+    ],
     qc: {
       qcHeight: 86141,
       qcRound: 536,
@@ -126,8 +147,20 @@ web3Instance.eth.getBlock(blockNumberOrHash).then(result => {
     },
     nonce: 0,
     epoch: 78,
-    kblockData: [],
-    powBlocks: null,
+    powBlocks: [
+      {
+          hash: "00000000837535afa2feb1815f7e096605c09ebaebd0e01d46a196881c8ee319",
+          prevBlock: "000000007c716547b2e4c508aa134746b93e19ada4dccd22b2f7f7749c0a6bb7",
+          beneficiary: "0x0aB5ddA6f096E127AF74d4b64A101ac6C43FA128",
+          height: 10143
+      },
+      {
+          hash: "000000007c716547b2e4c508aa134746b93e19ada4dccd22b2f7f7749c0a6bb7",
+          prevBlock: "000000004d497cd8845d735577f769bdf854a533960e7e6c09039070bd948b02",
+          beneficiary: "0x0aB5ddA6f096E127AF74d4b64A101ac6C43FA128",
+          height: 10142
+      },
+    ],
     transactions: []
 }
 ```
@@ -161,6 +194,14 @@ web3Instance.eth.getBlock(blockNumberOrHash).then(result => {
 + `singer` - `String`: Address of who signed the block(bytes20)
 + `isTrunk` - `Boolean`: Whether the block is in trunk
 + `transactions` - `Array of String`: Array of transaction IDs
++ `isKBlock` - `Boolean`: Whether the block is a KBlock
++ `lastKBlockHeight` - `Uint32`: Number of last KBlock
++ `qc` - `Object`: Object of quorum certificate that finalize the current block
++ `nonce` - `Uint64`: Nonce of block
++ `epoch` - `Uint64`: Epoch of block
++ `committee` - `Array of CommitteeMember`: Array of committee member information, only the block right after KBlock has this field
++ `powBlocks` - `Array of PowBlock`: Array of PoW block, only KBlock has this field
+
 
 ### Get transaction 
 
@@ -222,8 +263,9 @@ web3Instance.eth.getTransaction(transactionID).then(result => {
 `Clause Object`:
 
 + `to` - `String|Null`: Recipient of clause ,`Null` for contract deployment (byte32) 
-+ `value` - `String`: Hex form of vet to be transferred
++ `value` - `String`: Hex form of amount to be transferred
 + `data` - `String`: Input data (bytes)
++ `token` - `Uint32`: Token value, value `0` is `MTR` token, value `1` is `MTRG` token
 
 `Meta Object`:
 
@@ -263,7 +305,8 @@ web3Instance.eth.getTransactionReceipt(transactionHash).then(result => {
           transfers:
            [ { sender: "0x4f6fc409e152d33843cf4982d414c1dd0879277e",
                recipient: "0x7567d83b7b8d80addcb281a71d54fc7b3364ffed",
-               amount: "0x10f0cf064dd59200000" } ] }
+               amount: "0x10f0cf064dd59200000",
+               token: 0 } ] }
         ],
       blockNumber: 2257,
       blockHash: "0x000008d168c7d5ca180a0f5cf0aba148982b9d5bed263ee8bdc94e6863962a86",
@@ -315,9 +358,10 @@ web3Instance.eth.getTransactionReceipt(transactionHash).then(result => {
 
 `Transfer Object`:
 
-+ `sender` - `String`: Address that sends vet.
-+ `recipient` - `String`: Address that receives vet.
-+ `amount` - `String`: Amount of vet in `wei`.
++ `sender` - `String`: Address that sends amount.
++ `recipient` - `String`: Address that receives amount.
++ `amount` - `String`: Amount in `wei`.
++ `token` - `Uint64`: Token of this transfer, `0` is `MTR`, `1` is `MTRG`
 
 ### Send signed transaction
 
@@ -364,6 +408,7 @@ web3Instance.eth.sendTransaction({
     from: "0x7567d83b7b8d80addcb281a71d54fc7b3364ffed",
     to: "0xd3ae78222beadb038203be21ed5ce7c9b1bff602",
     value: 100,
+    token: 0,
 }).then(ret=>console.log(ret))
 // Transaction receipt will be displayed
 
@@ -662,7 +707,7 @@ subscription.unsubscribe(function(error, success){
 
 ### subscribe('transfers')
 
-Subscribes to incoming vet transfers. This can be used to watch an address's vet balance change.
+Subscribes to incoming transfers. This can be used to watch an address's MTR/MTRG balance change.
 
 ``` javascript
 web3Instance.eth.subscribe('transfers', option [, callback])
@@ -722,8 +767,8 @@ subscription.unsubscribe(function(error, success){
 
 + `pos` - `String(optional)`: A saved block ID for resuming the subscription, best block ID is assumed if omitted.
 + `txOrigin` - `String(optional)`: Signer address of tx 
-+ `sender` - `String(optional)`: Vet sender address
-+ `recipient` - `String(optional)`: Vet recipient address
++ `sender` - `String(optional)`: sender address
++ `recipient` - `String(optional)`: recipient address
 
 **Returns**
 
@@ -735,9 +780,9 @@ subscription.unsubscribe(function(error, success){
 
 `Transfer Object`:
 
-+ `sender` - `String`: Vet sender address
-+ `recipient` - `String`: Vet recipient address
-+ `amount` - `String`: Amount of vet in `wei`
++ `sender` - `String`: sender address
++ `recipient` - `String`: recipient address
++ `amount` - `String`: Amount in `wei`
 + `removed` - `Boolean`: Indicates whether the block containing this data become branch block
 + `meta` - `Meta Object`
 
